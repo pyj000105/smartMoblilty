@@ -1,25 +1,32 @@
 import streamlit as st
+from PIL import Image
 
-st.write('# Hi! Welcome to My App!')
+#체질량
+#키, 몸무계
 
-st.write('반갑습니다. 저의 앱에 오신것을 환영합니다.')
+st.write('# 체질량 지수 계산기')
+st.info("bmi는 당신의 몸무계를 키의 제곱으로 나누는 것입니다.")
 
-if st.button('Say hello'):
-    st.write('Why hello there')
-else:
-    st.write('Goodbye')
+height = st.number_input('키를 입력하세요. (cm)' , 100,200,178,1)
+st.write('키', height,'(cm)')
 
-option = st.selectbox(
-    '좋아하는 동물은?',
-    ('강아지', '고양이', '곰', '사자', '기린'))
+weight = st.number_input('체중을 입력하세요. (kg)',0,200,98,1 )
+st.write('체중', weight, '(kg)')
 
-st.write('내가 좋아하는 동물은?:', option,'입니다.')
-st.write('좋아하는 동물은', {option}, '입니다.')
+bmi = weight / ((height/100)**2)
+def bmi_range(bmi):
+    if bmi >= 25:
+        st.error('비만입니다.')
+    elif bmi >= 23:
+        st.warning('과체중입니다.')
+    elif bmi >= 18.5:
+        st.success('정상입니다.')
+    else:
+        st.info('저체중입니다.')
 
-txt = st.text_area('자기 소개를 해보세요', '''
-    
-    ''')
-st.write('입력한 내용은:', txt)
-
-age = st.slider('나이를 선택하세요?', 0, 130, 24)
-st.write("저의 나이는", age, '입니다.')
+if st.button('bmi계산'):
+    st.write('당신의 bmi는',round(bmi,2),'입니다.')
+    st.balloons()
+    bmi_range(bmi)
+image = Image.open('fitness.jpg')
+st.image(image)
